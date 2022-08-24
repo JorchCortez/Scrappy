@@ -1,25 +1,26 @@
 const axios    = require('axios')
 const cheerio  = require('cheerio');
-const { response } = require('express');
 const express  = require('express')
 
 const app = express();
 const PORT = 8000;
-const URL = "https://www.thecoderaccoons.com/"
+const URL = "https://skyrocket2022.webflow.io/projects"
 
 
 axios(URL)
     .then(res => {
         const html = res.data
         const $ = cheerio.load(html)
-        const items = []
-        //console.log(html)
-        $('link', html).each(function(){
-            let itemName    = $(this).attr('rel'); 
+        const items = [] 
+        $('.card-body', html).each(function(){
+            let curr = $(this).find(".h-s")
+            if(curr){ 
+                let itemName = curr.text(); 
+                items.push({
+                    itemName
+                })
+            }
            // console.log(itemName)
-            items.push({
-                itemName
-            })
         })
         console.log(items)
         
